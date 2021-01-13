@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 #
 # Configurable constants
 #
-make_doc = True
+make_doc = False
 PARAM = {}
 STA2NET = {}
 STNM2LOLA = {}
