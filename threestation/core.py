@@ -227,7 +227,7 @@ def cut_signal():
     args_mp = []
     for receiver in RECEIVER_STATION:
         if PARAM['write']['lag']:
-            my.sys_tool.mkdir(join(PARAM['dir']['out'], receiver))
+            my.sys_tool.mkdir(join(PARAM['dir']['project'], PARAM['dir']['out'], receiver))
         for I2 in STNM2I2[receiver]:
             dests = get_fnm('I2_lag_raw', receiver, I2=I2)
             # Avoid duplication when sta2 is also a receiver
@@ -511,7 +511,7 @@ def _three_station_interferometry_pair(rec1, rec2):
 
     # Do stack
     if PARAM['write']['stack']:
-        my.sys_tool.mkdir(join(PARAM['dir']['out'], PARAM['dir']['I3'], rec1))
+        my.sys_tool.mkdir(join(PARAM['dir']['project'], PARAM['dir']['out'], PARAM['dir']['I3'], rec1))
         if nsrc < PARAM['stack']['min_src']:
             logger.debug(f'Insufficient ({nsrc}) source-stations for {rec1}-{rec2}')
             return
@@ -546,6 +546,7 @@ def _three_station_interferometry_pair(rec1, rec2):
 
         if PARAM['stack']['rand']:
             my.sys_tool.mkdir(join(
+                PARAM['dir']['project'],
                 PARAM['dir']['out'],
                 PARAM['dir']['I3_rand'],
                 rec1,
@@ -562,7 +563,7 @@ def _three_station_interferometry_pair(rec1, rec2):
 
     # To save SNR in header after stack
     if PARAM['write']['C3']:
-        my.sys_tool.mkdir(join(PARAM['dir']['out'], rec1, rec2))
+        my.sys_tool.mkdir(join(PARAM['dir']['project'], PARAM['dir']['out'], rec1, rec2))
         for nm, tr in zip(dest_I3s, I3s):
             tr.write(nm, format='SAC')
 

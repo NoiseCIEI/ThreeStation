@@ -197,7 +197,7 @@ def get_fnm(kind, sta1=None, sta2=None, sta3=None,
     elif kind == 'I2_LAG_RAW':
         stadir = join(PARAM['dir']['project'], PARAM['dir']['out'], src)
         if PARAM['write']['lag']:
-            my.sys_tool.mkdir(join(PARAM['dir']['out'], src))
+            my.sys_tool.mkdir(join(PARAM['dir']['project'], PARAM['dir']['out'], src))
         if PARAM['interferometry']['nlag'] == 2:
             plag = join(stadir, f'P_{I2}')
             nlag = join(stadir, f'N_{I2}')
