@@ -298,7 +298,7 @@ if not make_doc:
     PARAM = my.fio.ryml(fparam)
 
     # Use direct-wave or coda
-    if PARAM['misc']['wavetype'].lower() in ['cw', 'coda', 'coda wave' 'coda-wave']:
+    if PARAM['misc']['wavetype'].lower() in ['cw', 'coda', 'coda wave', 'coda-wave']:
         USE_CW = True
         USE_DW = False
     elif PARAM['misc']['wavetype'].lower() in ['dw', 'direct wave', 'direct-wave']:
