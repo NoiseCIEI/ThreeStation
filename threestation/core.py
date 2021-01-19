@@ -531,6 +531,10 @@ def _three_station_interferometry_pair(rec1, rec2):
             'theta',
         ]:
             stats.sac.pop(KEY2SHD[key])
+        [stats.sac.evlo, stats.sac.evla] = STNM2LOLA[rec1]
+        [stats.sac.stlo, stats.sac.stla] = STNM2LOLA[rec2]
+        stats.sac.kevnm = rec1
+        stats.sac.kstnm = rec2
 
         sk = my.seis.stack(
             I3s,
