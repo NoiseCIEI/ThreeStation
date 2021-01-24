@@ -14,7 +14,7 @@ misc:
 ### Directories
 dir:
   # Everything will be relative to this directory
-  project: '/home/szhang/Desktop/ThreeStation/example'
+  project: '/home/szhang/Desktop/ThreeStation/example/data'
   # Two-statoin ambient noise interferogram
   I2: 'I2'
   # Output

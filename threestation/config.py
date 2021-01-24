@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 #
 # Configurable constants
 #
-make_doc = True
+make_doc = False
 PARAM = {}
 STA2NET = {}
 STNM2LOLA = {}
@@ -197,7 +197,7 @@ def get_fnm(kind, sta1=None, sta2=None, sta3=None,
     elif kind == 'I2_LAG_RAW':
         stadir = join(PARAM['dir']['project'], PARAM['dir']['out'], src)
         if PARAM['write']['lag']:
-            my.sys_tool.mkdir(join(PARAM['dir']['out'], src))
+            my.sys_tool.mkdir(join(PARAM['dir']['project'], PARAM['dir']['out'], src))
         if PARAM['interferometry']['nlag'] == 2:
             plag = join(stadir, f'P_{I2}')
             nlag = join(stadir, f'N_{I2}')
@@ -298,7 +298,7 @@ if not make_doc:
     PARAM = my.fio.ryml(fparam)
 
     # Use direct-wave or coda
-    if PARAM['misc']['wavetype'].lower() in ['cw', 'coda', 'coda wave' 'coda-wave']:
+    if PARAM['misc']['wavetype'].lower() in ['cw', 'coda', 'coda wave', 'coda-wave']:
         USE_CW = True
         USE_DW = False
     elif PARAM['misc']['wavetype'].lower() in ['dw', 'direct wave', 'direct-wave']:
