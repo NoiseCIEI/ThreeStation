@@ -3,6 +3,7 @@ import logging.config
 
 import numpy as np
 import scipy as sp
+from scipy.fft import fft, ifft, fftfreq, next_fast_len
 
 import pymodule as my
 from pymodule.seis import geod_inv
@@ -183,14 +184,14 @@ def phase_shift(delta, dr, per, pv, spc=None, data=None):
         and receiver-distance.
     """
     if spc is None:
-        nfreq = sp.fftpack.next_fast_len(data.size)
-        spc = sp.fftpack.fft(data, nfreq)
+        nfreq = next_fast_len(data.size)
+        spc = fft(data, nfreq)
     else:
         nfreq = spc.size
-    freq = sp.fftpack.fftfreq(nfreq, d=delta)
+    freq = fftfreq(nfreq, d=delta)
     dph = _phase(freq, dr, per, pv)
     spc = spc * np.exp(1j * dph)
-    data_ps = sp.fftpack.ifft(spc, nfreq).real
+    data_ps = ifft(spc, nfreq).real
 
     return data_ps
 

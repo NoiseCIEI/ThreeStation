@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 import obspy
 import scipy as sp
-from scipy.fftpack import fft, ifft, fftfreq
+from scipy.fft import fft, ifft, fftfreq, next_fast_len
 
 
 logger = logging.getLogger(__name__)
@@ -40,7 +40,7 @@ def whiten(tr, Tmin=1, Tmax=150, freq_width=.0004, brute=True,
     dom = sr / npts
     winlen = int(round(freq_width / dom))
 
-    nfreq = sp.fftpack.next_fast_len(npts)
+    nfreq = next_fast_len(npts)
     spc = fft(tr.data, nfreq)
     spc_am = np.abs(spc)
     spc_ph = np.unwrap(np.angle(spc))
