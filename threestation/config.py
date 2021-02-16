@@ -136,15 +136,13 @@ def get_fnm(kind, sta1=None, sta2=None, sta3=None,
 
     if kind in ['I2_PATH']:
         return join(
-            PARAM['dir']['project'],
-            PARAM['dir']['out'],
+            DIROUT,
             PARAM['dir']['meta'],
             PARAM['dir']['out'] + PARAM['sfx']['I2'],
         )
     if kind in ['SOURCE', 'SOURCE-STATION']:
         return join(
-            PARAM['dir']['project'],
-            PARAM['dir']['out'],
+            DIROUT,
             PARAM['dir']['meta'],
             PARAM['dir']['out'] + PARAM['sfx']['source'],
         )
@@ -164,40 +162,36 @@ def get_fnm(kind, sta1=None, sta2=None, sta3=None,
         )
     elif kind == 'I2_LAG_PROC':
         fnm = join(
-            PARAM['dir']['project'],
-            PARAM['dir']['out'],
+            DIROUT,
             src,
             f'{pre}_COR_{src}_{rec}.SAC',
         )
     elif kind == 'C3':
         fnm = join(
-            PARAM['dir']['project'],
-            PARAM['dir']['out'],
+            DIROUT,
             src,
             rec,
             f'{sta3}_{lags}_{src}_{rec}.SAC',
         )
     elif kind == 'I3':
         fnm = join(
-            PARAM['dir']['project'],
-            PARAM['dir']['out'],
+            DIROUT,
             PARAM['dir']['I3'],
             src,
             f'I3_{src}_{rec}.SAC',
         )
     elif kind == 'I3_RAND':
         fnm = join(
-            PARAM['dir']['project'],
-            PARAM['dir']['out'],
+            DIROUT,
             PARAM['dir']['I3_rand'],
             src,
             rec,
             f'I3_{src}_{rec}.SAC',
         )
     elif kind == 'I2_LAG_RAW':
-        stadir = join(PARAM['dir']['project'], PARAM['dir']['out'], src)
+        stadir = join(DIROUT, src)
         if PARAM['write']['lag']:
-            my.sys_tool.mkdir(join(PARAM['dir']['out'], src))
+            my.sys_tool.mkdir(stadir)
         if PARAM['interferometry']['nlag'] == 2:
             plag = join(stadir, f'P_{I2}')
             nlag = join(stadir, f'N_{I2}')
@@ -275,8 +269,7 @@ def _cp_fparam():
     Copy parameter file for reference later.
     """
     dir_meta = join(
-        PARAM['dir']['project'],
-        PARAM['dir']['out'],
+        DIROUT,
         PARAM['dir']['meta'],
     )
     my.sys_tool.mkdir(dir_meta)
@@ -296,6 +289,7 @@ def _cp_fparam():
 if not make_doc:
     fparam = './param.yml'
     PARAM = my.fio.ryml(fparam)
+    DIROUT = join(PARAM['dir']['project'], PARAM['dir']['out'])
 
     # Use direct-wave or coda
     if PARAM['misc']['wavetype'].lower() in ['cw', 'coda', 'coda wave' 'coda-wave']:
