@@ -292,7 +292,7 @@ if not make_doc:
     DIROUT = join(PARAM['dir']['project'], PARAM['dir']['out'])
 
     # Use direct-wave or coda
-    if PARAM['misc']['wavetype'].lower() in ['cw', 'coda', 'coda wave' 'coda-wave']:
+    if PARAM['misc']['wavetype'].lower() in ['cw', 'coda', 'coda wave', 'coda-wave']:
         USE_CW = True
         USE_DW = False
     elif PARAM['misc']['wavetype'].lower() in ['dw', 'direct wave', 'direct-wave']:
