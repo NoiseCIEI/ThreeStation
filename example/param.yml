@@ -1,50 +1,48 @@
 ### Miscellaneous
 misc:
-    # Use direct or coda wave?
+    # Use direct- or coda-wave?
     wavetype: 'direct-wave'
     # wavetype: 'coda-wave'
-
     # Number of cpus
     ncpu: 20
-
     # Logging level with increasing information:
     # 'CRITICAL', 'ERROR', 'WARNING', 'INFO', 'DEBUG'
     log_level: 'INFO'
 
 ### Directories
 dir:
-  # Everything will be relative to this directory
-  project: '/home/szhang/Desktop/ThreeStation/example/data'
-  # Two-statoin ambient noise interferogram
-  I2: 'I2'
-  # Output
-  out: 'test_I3_hyp'
-  # Store paths to I2 and common source stations
-  meta: 'metadata'
-  # Write stacked I3
-  I3: 'stack_all'
-  # Write randomly stacked I3 for uncertainty estimation
-  I3_rand: 'stack_rand'
+    # Everything will be relative to this directory
+    project: '/home/szhang/Desktop/ThreeStation/example/data'
+    # Two-statoin ambient noise interferogram
+    I2: 'I2'
+    # Output
+    out: 'test_I3_hyp'
+    # Store paths to I2 and common source stations
+    meta: 'metadata'
+    # Write stacked I3
+    I3: 'stack_all'
+    # Write randomly stacked I3 for uncertainty estimation
+    I3_rand: 'stack_rand'
 
 ### Station files
 fstation:
-  # One column of receiver-station names
-  receiver:
-      # File name
-      name: 'receiver.txt'
-      # Whether the receiver-stations are divided into groups
-      # The second column denotes the group number
-      group: False
-  # One column of source-station names
-  source: 'source.txt'  # [stnm]
-  # All stations
-  all:
-    name: 'all.txt'
-    # Four columns of network, station, longitude, latitude
-    col_net: 0
-    col_sta: 1
-    col_lon: 2
-    col_lat: 3
+    # One column of receiver-station names
+    receiver:
+        # File name
+        name: 'receiver.txt'
+        # Whether the receiver-stations are divided into groups
+        # The second column denotes the group number
+        group: False
+    # One column of source-station names
+    source: 'source.txt'  # [stnm]
+    # All stations
+    all:
+        name: 'all.txt'
+        # Four columns of network, station, longitude, latitude
+        col_net: 0
+        col_sta: 1
+        col_lon: 2
+        col_lat: 3
 
 ### Signal-to-noise ratio
 # Signal window: [tmin - bfact*Tmax, tmax + efact*Tmax]
@@ -65,25 +63,25 @@ snr:
 # Direct-wave window: [tmin - bfact_dw*Tmax, tmax + efact_dw*Tmax]
 # Coda window: [tmax + efact_cw*Tmax, te]
 cut:
-  # Desired sampling interval
-  delta: 1
-  # Minimum length of window (s)
-  min_len: 1500
-  # If mute outside surface wave window
-  mute: False
-  # Only mute precursory for calculating SNR
-  mute_prc_only: True
-  vmin: 1
-  vmax: 5
-  Tmax: 150
-  # Maximum lag time
-  te: 3000
-  bfact_dw: 1
-  efact_dw: 1
-  efact_cw: 1
-  # Ensure that trailing noise in SNR is non-zero
-  restrict_src_dist: True
-  cw4snr: 1000
+    # Desired sampling interval
+    delta: 1
+    # Minimum length of window (s)
+    min_len: 1500
+    # If mute outside surface wave window
+    mute: False
+    # Only mute precursory for calculating SNR
+    mute_prc_only: True
+    vmin: 1
+    vmax: 5
+    Tmax: 150
+    # Maximum lag time
+    te: 3000
+    bfact_dw: 1
+    efact_dw: 1
+    efact_cw: 1
+    # Ensure that trailing noise in SNR is non-zero
+    restrict_src_dist: True
+    cw4snr: 1000
 
 ### Preprocess two-station interferograms
 preproc:
@@ -102,85 +100,85 @@ preproc:
 
 ### Three-station interferometry
 interferometry:
-  # Interferometry operator: 'corrlation' or 'convolution'
-  # operator: 'convolution'
-  operator: 'correlation'
-  # Whether de-bias source-specific interferogram via phase shift
-  phase_shift: False
-  # Whether pick the appropriate lag (causal or acausal) for
-  # direct-wave correlations
-  pick_lag: True
-  # 1-D predicted phase velocity in two columns: [period, phase velocity]
-  pred_pv_1d:
-  # 2-D predicted phase velocity in a dictionary
-  # mapping names of station-pair to [period, phase velocity]
-  pred_pv_2d:
-  # Whether trim the convolutional interferogram at the end
-  # to make it the same as the input length
-  trim_conv: True
-  # Whether save source-station direction to SAC header
-  # 1 or 2 correspond to whether the source is close to station1 or station2
-  return_srcdir: True
-  # Limit source-stations to stationary phase zone
-  spz: True
-  # Maximum deviation from inter-receiver distance (%)
-  max_drpct: 1
-  # Minimum source-receiver distance (km)
-  min_srdist: 120
-  # Whether use Welch's method in coda correlation
-  Welch: False
-  # Sub-window length for Welch's method (s)
-  subwin: 800
-  # Sub-window overlapping fraction for Welch's method
-  lap: .5
-  # Whether flip negative lag
-  flip_nlag: True
-  # No. of lags from two-station interferograms to use
-  # 2: positive-positive and negative-negative
-  # 4: also include positive-negative and negative-positive
-  nlag: 4
-  # Demean data before correlation
-  demean: False
-  # Normalize correlation
-  normalize: False
-  # Correlate in 'time' or 'freq' domain
-  domain: 'freq'
-  # Symmetrize correlation
-  symmetric: True
+    # Interferometry operator: 'corrlation' or 'convolution'
+    # operator: 'convolution'
+    operator: 'correlation'
+    # Whether de-bias source-specific interferogram via phase shift
+    phase_shift: False
+    # Whether pick the appropriate lag (causal or acausal) for
+    # direct-wave correlations
+    pick_lag: True
+    # 1-D predicted phase velocity in two columns: [period, phase velocity]
+    pred_pv_1d:
+    # 2-D predicted phase velocity in a dictionary
+    # mapping names of station-pair to [period, phase velocity]
+    pred_pv_2d:
+    # Whether trim the convolutional interferogram at the end
+    # to make it the same as the input length
+    trim_conv: True
+    # Whether save source-station direction to SAC header
+    # 1 or 2 correspond to whether the source is close to station1 or station2
+    return_srcdir: True
+    # Limit source-stations to stationary phase zone
+    spz: True
+    # Maximum deviation from inter-receiver distance (%)
+    max_drpct: 1
+    # Minimum source-receiver distance (km)
+    min_srdist: 120
+    # Whether use Welch's method in coda correlation
+    Welch: False
+    # Sub-window length for Welch's method (s)
+    subwin: 800
+    # Sub-window overlapping fraction for Welch's method
+    lap: .5
+    # Whether flip negative lag
+    flip_nlag: True
+    # No. of lags from two-station interferograms to use
+    # 2: positive-positive and negative-negative
+    # 4: also include positive-negative and negative-positive
+    nlag: 4
+    # Demean data before correlation
+    demean: False
+    # Normalize correlation
+    normalize: False
+    # Correlate in 'time' or 'freq' domain
+    domain: 'freq'
+    # Symmetrize correlation
+    symmetric: True
 
 ### Stack source-specific interferograms
 stack:
-  # Minimum source-stations required for stack
-  min_src: 1
-  # How to weigh individual C3 in stack
-  # 'RMS': reciprocal of RMS of trailing noise
-  # 'unit': reciprocal of absolute maximum
-  # 'None': no weight
-  # 'SNR': signal-to-noise ratio
-  weight: 'rms_noise'
-  # Whether output symmetric component
-  symmetric: False
-  # Whether sort coda correlations by length before stacking
-  sort: False
-  # Whehter compute random stacks for uncertainty estimation
-  rand: False
-  # Number of random stacks
-  nsub: 4
+    # Minimum source-stations required for stack
+    min_src: 1
+    # How to weigh individual C3 in stack
+    # 'RMS': reciprocal of RMS of trailing noise
+    # 'unit': reciprocal of absolute maximum
+    # 'None': no weight
+    # 'SNR': signal-to-noise ratio
+    weight: 'rms_noise'
+    # Whether output symmetric component
+    symmetric: False
+    # Whether sort coda correlations by length before stacking
+    sort: False
+    # Whehter compute random stacks for uncertainty estimation
+    rand: False
+    # Number of random stacks
+    nsub: 4
 
 ### Whether skip certain processing
 skip:
-  # Skip finding paths to correlations if files already exist
-  find_I2: False
-  # Skip cutting lags if already exists
-  cut: False
-  # Skip preprocessing lags if already exists
-  preprocess: False
-  # Skip finding source stations if files already exist
-  find_source: False
-  # Skip computing C3 if already exists
-  C3: False
-  # Skip stacking for I3 if already exists
-  I3: False
+    # Skip finding paths to correlations if files already exist
+    find_I2: False
+    # Skip cutting lags if already exists
+    cut: False
+    # Skip preprocessing lags if already exists
+    preprocess: False
+    # Skip finding source stations if files already exist
+    find_source: False
+    # Skip computing C3 if already exists
+    C3: False
+    # Skip stacking for I3 if already exists
+    I3: False
 
 ### Whether write intermediate files
 write:
@@ -196,10 +194,10 @@ write:
 ### Suffix and prefix for file names
 # Suffix of metadata
 sfx:
-  # Appended to files of paths
-  I2: '_I2'
-  # Appended to files of sources
-  source: '_source'
+    # Appended to files of paths
+    I2: '_I2'
+    # Appended to files of sources
+    source: '_source'
 # Prefix
 pfx:
     plag: 'P'
