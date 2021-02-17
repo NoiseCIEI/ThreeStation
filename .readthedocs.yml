@@ -14,3 +14,6 @@ python:
   install:
     - requirements: requirements.txt
   system_packages: True
+
+conda:
+  environment: environment.yml
