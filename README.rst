@@ -1,6 +1,9 @@
 ThreeStation
 ============
 
+.. image:: https://github.com/NoiseCIEI/ThreeStation/blob/master/doc/source/schematic.jpg?raw=true
+    :alt: "ThreeStation: A Python package for performing three-station interferometry."
+
 Code to perform **three-station interferometry**:
 
 Shane Zhang, Lili Feng, Michael H Ritzwoller, Three-station interferometry and tomography: coda versus direct waves, *Geophysical Journal International*, Volume 221, Issue 1, April 2020, Pages 521–541, https://doi.org/10.1093/gji/ggaa046
