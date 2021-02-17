@@ -33,6 +33,7 @@ USE_CW = False
 USE_DW = False
 CONV = False
 CORR = False
+DIROUT = './'
 
 #
 # SAC headers
