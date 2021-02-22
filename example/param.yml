@@ -121,10 +121,14 @@ interferometry:
     return_srcdir: True
     # Limit source-stations to stationary phase zone
     spz: True
+    # Define SPZ using a constant, a fraction of inter-receiver distance, or an azimuth
+    method: 'const'
+    # Maximum deviation from inter-receiver distance (km)
+    max_dr: 30
     # Maximum deviation from inter-receiver distance (%)
     max_drpct: 1
     # Minimum source-receiver distance (km)
-    min_srdist: 120
+    min_srdist: 30
     # Whether use Welch's method in coda correlation
     Welch: False
     # Sub-window length for Welch's method (s)

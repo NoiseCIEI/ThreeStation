@@ -88,10 +88,12 @@ def stationary_phase_zone(lon_r1, lat_r1, lon_r2, lat_r2, lon_s, lat_s, **kwargs
     If a source-station is in stationary phase zone (SPZ).
     """
     op = kwargs.get('operator', 'correlation').lower()
+    method = kwargs.get('method', 'distance').lower()
     max_drpct = kwargs.get('max_drpct', 1)
+    max_dr = kwargs.get('max_dr', 30)
     max_deg = kwargs.get('max_deg', 8)
     return_srcdir = kwargs.get('return_srcdir', True)
-    min_srdist = kwargs.get('min_srdist', 120)
+    min_srdist = kwargs.get('min_srdist', 30)
 
     if op in ['corr', 'correlation']:
         use_corr = True
@@ -110,17 +112,17 @@ def stationary_phase_zone(lon_r1, lat_r1, lon_r2, lat_r2, lon_s, lat_s, **kwargs
         _src_distaz(lon_r1, lat_r1, lon_r2, lat_r2, lon_s, lat_s)
     op = op.lower()
     if use_corr:
-        dr = abs(r1s-r2s) - r12
+        dr = abs(r1s - r2s) - r12
         theta = _theta
     elif use_conv:
-        dr = (r1s+r2s) - r12
+        dr = (r1s + r2s) - r12
         theta = np.rad2deg(np.arccos(r12 / (r1s+r2s)))
 
-    method = kwargs.get('method', 'distance').lower()
-
-    if 'dist' in method:
+    if method in ['dist', 'distance']:
         inspz = abs(dr) < max_drpct/100 * r12
-    elif 'az' in method:
+    elif method in ['const', 'constant']:
+        inspz = abs(dr) < max_dr
+    elif method in ['az', 'azimuth']:
         if use_corr:
             inspz = False
             for k in [0, 180, 360]:
