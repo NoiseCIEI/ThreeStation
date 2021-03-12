@@ -5,6 +5,7 @@ dependencies:
     - astropy
     - bottleneck
     - h5py
+    - jupyterlab
     - matplotlib
     - numpy
     - obspy
