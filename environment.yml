@@ -9,6 +9,7 @@ dependencies:
     - matplotlib
     - numpy
     - obspy
+    - pandas
     - pyproj
     - pyyaml
     - scipy
