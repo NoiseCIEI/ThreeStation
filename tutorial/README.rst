@@ -4,7 +4,7 @@ First, create a conda environment using the ``environment.yml`` in the same repo
 
 .. code-block:: shell
 
-    cd ThreeStation/tutorial
+    cd ThreeStation
     conda env create -f environment.yml
     conda activate threestation
 
@@ -12,4 +12,5 @@ Then, uncompress the data:
 
 .. code-block:: shell
 
+    cd tutorial
     tar zxvf data.tar.gz
