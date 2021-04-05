@@ -17,6 +17,8 @@ Documentation
 
 https://threestation.readthedocs.io/en/latest
 
+Tutorial: https://www.youtube.com/watch?v=4gxWHNAcoPU
+
 Reference
 ---------
 
