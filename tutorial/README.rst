@@ -1,3 +1,6 @@
+Tutorial on Three-station Interferometry for 2021 Lamont-doherty Seismology Student Workshop IX
+-----------------------------------------------------------------------------------------------
+
 This ``README`` is only for the tutorial. If you are interested in using the full package, please see the ``README`` in the main folder.
 
 First, create a conda environment using the ``environment.yml`` in the same repo:
