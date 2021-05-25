@@ -17,16 +17,16 @@ Documentation
 
 https://threestation.readthedocs.io/en/latest
 
-Tutorial: https://www.youtube.com/watch?v=4gxWHNAcoPU
+Video tutorial: https://www.youtube.com/watch?v=4gxWHNAcoPU
 
 Reference
 ---------
 
 **This code is used in:**
 
-- Shane Zhang, Hongda Wang, Mengyu Wu, Michael H Ritzwoller, **Isotropic and Azimuthally Anisotropic Rayleigh Wave Dispersion Across the Juan de Fuca and Gorda Plates and U.S. Cascadia from Earthquake Data and Ambient Noise Two- and Three-Station Interferometry**, *EarthArXiv*, https://doi.org/10.31223/osf.io/p4mnb
+- Shane Zhang, Hongda Wang, Mengyu Wu, Michael H Ritzwoller, **Isotropic and azimuthally anisotropic Rayleigh wave dispersion across the Juan de Fuca and Gorda plates and U.S. Cascadia from earthquake data and ambient noise two- and three-station interferometry**, Geophysical Journal International, Volume 226, Issue 2, August 2021, Pages 862–883, doi: `10.1093/gji/ggab142 <https://doi.org/10.1093/gji/ggab142>`__
 
-- Shane Zhang, Lili Feng, Michael H Ritzwoller, **Three-station interferometry and tomography: coda versus direct waves**, *Geophysical Journal International*, Volume 221, Issue 1, April 2020, Pages 521–541, https://doi.org/10.1093/gji/ggaa046
+- Shane Zhang, Lili Feng, Michael H Ritzwoller, **Three-station interferometry and tomography: coda versus direct waves**, Geophysical Journal International, Volume 221, Issue 1, April 2020, Pages 521–541, doi: `10.1093/gji/ggaa046 <https://doi.org/10.1093/gji/ggaa046>`__
 
 Please consider adding your work here
 (sumbit `pull requests on GitHub <https://github.com/noiseciei/threestation/pulls>`__)
