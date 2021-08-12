@@ -1,7 +1,7 @@
 ThreeStation
 ============
 
-.. image:: https://github.com/NoiseCIEI/ThreeStation/blob/master/doc/source/schematic.jpg?raw=true
+.. image:: https://github.com/NoiseCIEI/ThreeStation/blob/main/doc/source/schematic.jpg?raw=true
     :alt: "ThreeStation: A Python package for performing three-station interferometry."
 
 Code to perform **three-station interferometry**:
