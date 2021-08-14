@@ -4,6 +4,7 @@ h5py
 matplotlib
 numpy
 obspy
+pandas
 pyproj
 pyyaml
 scipy

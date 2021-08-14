@@ -11,6 +11,7 @@ setup(
         'matplotlib',
         'numpy',
         'obspy',
+        'pandas',
         'pyyaml',
         'setuptools',
         'tqdm',
