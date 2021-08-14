@@ -5,6 +5,7 @@ import shutil
 from sys import exit
 
 import numpy as np
+import pandas as pd
 
 import pymodule as my
 
@@ -17,12 +18,6 @@ logger = logging.getLogger(__name__)
 #
 make_doc = True
 PARAM = {}
-STA2NET = {}
-STNM2LOLA = {}
-ALL_STATION = []
-RECEIVER_STATION = []
-RECEIVER_GROUP = None
-SOURCE_STATION = []
 PHPRPER = []
 PHPRVEL = []
 PRED_PV = None
@@ -59,34 +54,12 @@ KEY2SHD = {v: k for k, v in SHD2KEY.items()}
 #
 # Configurable functions
 #
-def group_sta(lst, lnum):
-    """
-    Return 2 groups of stations.
-
-    :param lst: list of stations
-    :param lnum: list of group #
-    """
-    num = list(set(lnum))
-    if len(num) != 2:
-        raise ValueError('# of group != 2.')
-    else:
-        g0 = []
-        g1 = []
-        for k, st in enumerate(lst):
-            if lnum[k] == num[0]:
-                g0.append(st)
-            else:
-                g1.append(st)
-
-        return g0, g1
-
-
-def get_order(lst, st1, st2):
+def get_order(st1, st2):
     """
     Sort two stations according to their orders in `lst`.
     """
-    id1 = lst.index(st1)
-    id2 = lst.index(st2)
+    id1 = META[META['net_sta'] == st1].index
+    id2 = META[META['net_sta'] == st2].index
 
     if id1 <= id2:
         return [st1, st2]
@@ -94,16 +67,15 @@ def get_order(lst, st1, st2):
         return [st2, st1]
 
 
-def get_pred_pv(n1, s1, n2, s2, pair=None, pair_r=None):
+def get_pred_pv(rec1, rec2):
     """
     Get predicted phase velocity.
     """
     per = PHPRPER
     pv = PHPRVEL
     if PRED_PV:
-        if pair is None:
-            pair = '_'.join([n1, s1, n2, s2])
-            pair_r = '_'.join([n2, s2, n1, s1])
+        pair = '_'.join([rec1, rec2])
+        pair_r = '_'.join([rec2, rec1])
         if pair in PRED_PV:
             pass
         elif pair_r in PRED_PV:
@@ -152,7 +124,7 @@ def get_fnm(kind, sta1=None, sta2=None, sta3=None,
         sta2 = basename(dirname(I2))
         I2 = basename(I2)
 
-    src, rec = get_order(ALL_STATION, sta1, sta2)
+    src, rec = get_order(sta1, sta2)
 
     if kind == 'I2':
         fnm = join(
@@ -230,41 +202,6 @@ def _check():
     return
 
 
-def _meta(name, col_net=0, col_sta=1, col_lon=2, col_lat=3):
-    """
-    Extract network, station name, longitude, and latitude.
-    Overwrite `STA2NET, STNM2LOLA, RECEIVER_STATION, RECEIVER_GROUP, SOURCE_STATION,
-    ALL_STATION`.
-    """
-    global STA2NET
-    global STNM2LOLA
-    global RECEIVER_STATION
-    global RECEIVER_GROUP
-    global SOURCE_STATION
-    global ALL_STATION
-
-    with open(join(PARAM['dir']['project'], name), 'r') as f:
-        for line in f:
-            lst = line.split()
-            # key = f'{lst[col_net]}.{lst[col_sta]}'
-            key = lst[col_sta]
-            STNM2LOLA[key] = [float(lst[col_lon]), float(lst[col_lat])]
-            STA2NET[key] = lst[col_net]
-            ALL_STATION.append(key)
-
-    f_rec_st = join(PARAM['dir']['project'], PARAM['fstation']['receiver']['name'])
-    RECEIVER_STATION = my.fio.rcol(f_rec_st, 0)[0]
-    if PARAM['fstation']['receiver']['group']:
-        RECEIVER_GROUP = my.fio.rcol(f_rec_st, 1)[0]
-    else:
-        RECEIVER_GROUP = None
-
-    _f = join(PARAM['dir']['project'], PARAM['fstation']['source'])
-    SOURCE_STATION = my.fio.rcol(_f, 0)[0]
-
-    return
-
-
 def _cp_fparam():
     """
     Copy parameter file for reference later.
@@ -291,6 +228,9 @@ if not make_doc:
     fparam = './param.yml'
     PARAM = my.fio.ryml(fparam)
     DIROUT = join(PARAM['dir']['project'], PARAM['dir']['out'])
+
+    _check()
+    _cp_fparam()
 
     # Use direct-wave or coda
     if PARAM['misc']['wavetype'].lower() in ['cw', 'coda', 'coda wave', 'coda-wave']:
@@ -321,6 +261,8 @@ if not make_doc:
     if _fpv_2d is not None:
         PRED_PV = my.fio.rpk(_fpv_2d)
 
-    _check()
-    _meta(**PARAM['fstation']['all'])
-    _cp_fparam()
+    # Station metadata
+    META = pd.read_csv(join(PARAM['dir']['project'], PARAM['fstation']['all']))
+    META['net_sta'] = META['net'] + '_' + META['sta']
+    RECEIVER_STATION = pd.read_csv(join(PARAM['dir']['project'], PARAM['fstation']['receiver']))
+    SOURCE_STATION = pd.read_csv(join(PARAM['dir']['project'], PARAM['fstation']['source']))

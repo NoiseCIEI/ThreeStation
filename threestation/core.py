@@ -23,17 +23,14 @@ from .config import (
     DIROUT,
     KEY2SHD,
     PARAM,
-    STNM2LOLA,
+    META,
     RECEIVER_STATION,
-    RECEIVER_GROUP,
     SOURCE_STATION,
-    STA2NET,
     USE_CW,
     USE_DW,
 
     # Functions
     get_fnm,
-    group_sta,
     get_pred_pv,
 )
 from .preprocess import (
@@ -67,10 +64,10 @@ def _receiver_station_pairs():
     """
     Return all possible combinations of two receiver-stations.
     """
-    if RECEIVER_GROUP is None:
-        return it.combinations(RECEIVER_STATION, 2)
+    if 'group' in RECEIVER_STATION.columns:
+        return it.product(*[list(i['net_sta']) for _, i in RECEIVER_STATION.groupby('group')])
     else:
-        return it.product(*group_sta(RECEIVER_STATION, RECEIVER_GROUP))
+        return it.combinations(list(RECEIVER_STATION['net_sta']), 2)
 
 
 def get_two_station_interferogram():
@@ -89,9 +86,9 @@ def get_two_station_interferogram():
         return
 
     logger.info('# Get two-station interferograms for receiver-stations.')
-    STNM2SRC.update({rec: set() for rec in RECEIVER_STATION})
-    STNM2I2.update({rec: set() for rec in RECEIVER_STATION})
-    for receiver, source in tqdm(list(it.product(RECEIVER_STATION, SOURCE_STATION))):
+    STNM2SRC.update({rec: set() for rec in RECEIVER_STATION['net_sta']})
+    STNM2I2.update({rec: set() for rec in RECEIVER_STATION['net_sta']})
+    for receiver, source in tqdm(list(it.product(list(RECEIVER_STATION['net_sta']), list(SOURCE_STATION['net_sta'])))):
         # Avoid using auto-correlations
         if receiver == source:
             continue
@@ -226,7 +223,7 @@ def cut_signal():
     logger.info('# Cut signal from two-station interferograms')
 
     args_mp = []
-    for receiver in RECEIVER_STATION:
+    for receiver in RECEIVER_STATION['net_sta']:
         if PARAM['write']['lag']:
             my.sys_tool.mkdir(join(DIROUT, receiver))
         for I2 in STNM2I2[receiver]:
@@ -235,7 +232,7 @@ def cut_signal():
             sta2 = basename(dirname(I2))
             if (
                 (sta2 != receiver)
-                and (sta2 in RECEIVER_STATION)
+                and (sta2 in RECEIVER_STATION['net_sta'])
                 and (I2 in STNM2I2[sta2])
             ):
                 continue
@@ -346,16 +343,16 @@ def _source_specifc_interferogram(trnm1, trnm2, rec1, rec2, src, lags, **kwargs)
         'delta': tr1.stats.delta,
         'npts': C3.size,
         'kevnm': rec1,
-        'evlo': STNM2LOLA[rec1][0],
-        'evla': STNM2LOLA[rec1][1],
-        'knetwk': STA2NET[rec1],
+        'evlo': META[META['net_sta'] == rec1]['lon'].iloc[0],
+        'evla': META[META['net_sta'] == rec1]['lat'].iloc[0],
+        'knetwk': rec2.split('_')[0],
         'kstnm': rec2,
-        'stlo': STNM2LOLA[rec2][0],
-        'stla': STNM2LOLA[rec2][1],
+        'stlo': META[META['net_sta'] == rec2]['lon'].iloc[0],
+        'stla': META[META['net_sta'] == rec2]['lat'].iloc[0],
         'dist': kwargs.get('dist', DEF_SHD),
-        KEY2SHD['net_rec']: STA2NET[rec2],  # to be consistent with I2
-        KEY2SHD['src_sta']: src,
-        KEY2SHD['src_net']: STA2NET[src],
+        KEY2SHD['net_rec']: rec2.split('_')[0],  # to be consistent with I2
+        KEY2SHD['src_sta']: src.split('_')[1],
+        KEY2SHD['src_net']: src.split('_')[0],
         KEY2SHD['nsided']: nsided,
         KEY2SHD['dr']: kwargs.get('dr', DEF_SHD),
         KEY2SHD['theta']: kwargs.get('theta', DEF_SHD),
@@ -392,10 +389,14 @@ def _source_specifc_interferogram_pair(rec1, rec2, src, phprper=None, phprvel=No
     dir_src = DEF_SHD
     min_srdist = DEF_SHD
 
+    lon_1 = META[META['net_sta'] == rec1]['lon'].iloc[0]
+    lat_1 = META[META['net_sta'] == rec1]['lat'].iloc[0]
+    lon_2 = META[META['net_sta'] == rec2]['lon'].iloc[0]
+    lat_2 = META[META['net_sta'] == rec2]['lat'].iloc[0]
+    lon_s = META[META['net_sta'] == src]['lon'].iloc[0]
+    lat_s = META[META['net_sta'] == src]['lat'].iloc[0]
     res = stationary_phase_zone(
-        *STNM2LOLA[rec1],
-        *STNM2LOLA[rec2],
-        *STNM2LOLA[src],
+        lon_1, lat_1, lon_2, lat_2, lon_s, lat_s,
         **PARAM['interferometry']
     )
     inspz, dr, theta, dist, min_srdist = res[:5]
@@ -409,9 +410,7 @@ def _source_specifc_interferogram_pair(rec1, rec2, src, phprper=None, phprvel=No
 
     if USE_CW and getattr(PARAM['cut'], 'restrict_src_dist', True):
         r1s, r2s, dist = triangle_edges(
-            *STNM2LOLA[rec1],
-            *STNM2LOLA[rec2],
-            *STNM2LOLA[src],
+            lon_1, lat_1, lon_2, lat_2, lon_s, lat_s,
         )
         for _r in [r1s, r2s]:
             t_coda = (_r/PARAM['cut']['vmin']
@@ -422,7 +421,7 @@ def _source_specifc_interferogram_pair(rec1, rec2, src, phprper=None, phprvel=No
                 return [], []
 
     if dist is None:
-        dist, _, _ = my.seis.geod_inv(*STNM2LOLA[rec1], *STNM2LOLA[rec2])
+        dist, _, _ = my.seis.geod_inv(lon_1, lat_1, lon_2, lat_2)
 
     interferogram = functools.partial(
         _source_specifc_interferogram,
@@ -487,7 +486,7 @@ def _three_station_interferometry_pair(rec1, rec2):
     phprper = None
     phprvel = None
     if USE_DW and PARAM['interferometry']['phase_shift']:
-        phprper, phprvel = get_pred_pv(STA2NET[rec1], rec1, STA2NET[rec2], rec2)
+        phprper, phprvel = get_pred_pv(rec1, rec2)
 
     dir_src = PARAM['interferometry'].get('dir_src', True)
     dest_I3s = []
