@@ -26,23 +26,12 @@ dir:
 
 ### Station files
 fstation:
-    # One column of receiver-station names
-    receiver:
-        # File name
-        name: 'receiver.txt'
-        # Whether the receiver-stations are divided into groups
-        # The second column denotes the group number
-        group: False
-    # One column of source-station names
-    source: 'source.txt'  # [stnm]
-    # All stations
-    all:
-        name: 'all.txt'
-        # Four columns of network, station, longitude, latitude
-        col_net: 0
-        col_sta: 1
-        col_lon: 2
-        col_lat: 3
+    # Receiver-station names, [group number]
+    receiver: 'receiver.csv'
+    # Source-station names
+    source: 'source.csv'  # [stnm]
+    # All stations: network, station, longitude, latitude
+    all: 'all.csv'
 
 ### Signal-to-noise ratio
 # Signal window: [tmin - bfact*Tmax, tmax + efact*Tmax]
