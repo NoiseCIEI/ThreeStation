@@ -22,7 +22,7 @@ and other dependencies (`setup.py`) in the new environment
 using either conda_ or pip_.
 
 After installing dependencies, or if you decide to use pip_
-to install dependencies, run the follows will install `threestation`
+to install dependencies, run the following will install `threestation`
 and missing dependencies:
 
 .. code-block:: shell
